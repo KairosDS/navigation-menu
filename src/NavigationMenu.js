@@ -185,7 +185,7 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
       const item = dropdownMenu[drodownMenuItem][0];
       console.log(item)
       HTMLDropdown.push(html`
-        <li class="dropdown-nav-li">
+        <li part="nav-subitem" class="dropdown-nav-li">
         <a class="drop__menu-link ${classMap({ selected: this.route === item.href })}"
             href="/${this.language}/${item.href}" rel="noopener noreferrer" target="${item.target || '_self'}">
             ${item.content}
@@ -207,7 +207,7 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
      <img id="arrow-left-navigation_${this.indexCounter}"
         class=" arrow-left-navigation inactive ${menuItem.title.replace(/\s/g, '')}" src="../demo/assets/images/arrow_left.svg"
         alt="flecha de acceso a submenu" @click="${this.handleClickBack}" index="${this.indexCounter}" />
-      <span id="${menuItem.id}" role="menuItem" @click="${this.handleClick}" index="${this.indexCounter}"  tabindex="0" class="${classMap({span_icon_decoration: !this.hasDropMenu})}">
+      <span part="nav-item" id="${menuItem.id}" role="menuItem" @click="${this.handleClick}" index="${this.indexCounter}"  tabindex="0" class="${classMap({span_icon_decoration: !this.hasDropMenu})}">
         ${menuItem.title}
        <img class="${window.innerWidth < 1024 ? 'inactive' : 'arrow-down-dropdown'}" src="../demo/assets/images/arrow_down.svg"
           alt="=>"/>
@@ -250,21 +250,11 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
   }
 
   render() {
-    console.log(this.hasDropMenu)
     return html`
-      <div class="navbar-container">
-
+      <div class="navbar-container"part="nav-bar-container">
         <input type="checkbox" class="navbar__input" id="toggleMenu" />
         <label tabindex="0" class="navbar-menu-icon" for="toggleMenu"></label>
-
-        <div id="home" class="navbar-logo">
-          <a class="navbar-logo__link" rel="noopener noreferrer"
-            href="${this.language === 'es' ? '/' : '/en/index.html'}">
-            <img class="logo-kairos" src="" alt="kairos logo" />
-          </a>
-        </div>
-
-        <nav role="navigation" class="navbar">
+        <nav  role="navigation" class="navbar"  part="nav-bar">
           <ul class="navbar-list">
            ${this.renderMainMenu()}
           </ul>

@@ -3,21 +3,10 @@ import { css } from 'lit-element';
 export const wcNameStyles = css`
 :host {
   display: block;
+  font-family: sans-serif;
+  height: 100%;
+
 }
-
-
-.navbar-container {
-  width: 100%;
-  height: 60px;
-  background-color: rgba(255, 255, 255);
-  box-shadow: 0px 2px 6px rgba(178, 176, 176, 0.5);
-  z-index: 4;
-  position: fixed;
-  top: 0px;
-  display: flex;
-  align-items: center;
-}
-
 .navbar {
   width: 92vw;
   height: 90vh;
@@ -30,9 +19,6 @@ export const wcNameStyles = css`
   font-size: 16px;
 }
 
-.navbar-logo {
-  display: inline-block;
-}
 
 .navbar-menu-icon {
   width: 14px;
@@ -59,11 +45,6 @@ export const wcNameStyles = css`
   right: 0;
 }
 
-
-.logo-kairos {
-  width: 152px;
-  padding-left: 15px;
-}
 
 .navbar-list {
   flex-direction: column;
@@ -144,15 +125,16 @@ ul li a, span {
 /* DESKTOP STYLES  */
 @media all and (min-width: 1024px) {
   .navbar-container {
-    display: flex;
     justify-content: space-between;
-    box-shadow: 0px 2px 6px rgba(178, 176, 176, 0.5);
+    height: 100%;
+    justify-content: center;
   }
 
   .navbar {
     width: auto;
     min-width: 700px;
     height: 100%;
+    margin-right: 10%;
     position: static;
     transition: none;
     background-color: transparent;
@@ -235,19 +217,10 @@ ul li a, span {
     padding-top: 14px;
   }
 
-  .logo-kairos {
-    width: 160px;
-    padding-left: 0;
-  }
-
   .navbar-list__item:focus {
     outline: none;
   }
- 
-  .navbar-container {
-    display: flex;
-    justify-content: space-between;
-  }
+
 
   .navbar-menu-icon {
     display: none;
@@ -271,9 +244,6 @@ ul li a, span {
     padding: 0  0 0 8px;
   }
 
-  .logo-kairos {
-    width: 180px;
-  }
 
   .dropdown-services-container {
     position: absolute;
@@ -306,11 +276,6 @@ ul li a, span {
     height: 20px;
   }
 }
-@media all and (min-width: 1250px) {
-  .dropdown-about-container {
-    right: 42%;
-  }
-}
 
 @media all and (min-width: 1280px) {
   .navbar__btn-lang-desktop--show {
@@ -318,37 +283,12 @@ ul li a, span {
     padding-right: 9%;
   }
 
-    .navbar-logo {
-    padding-left: 10%;
+  .navbar-logo {
+  padding-left: 10%;
   }
 
   .navbar-list__item {
     padding: 0  0 0 16px;
-  }
-  
-  .dropdown-about-container {
-    right: 45%;
-  }
-
- 
-
-
-}
-
-@media all and (min-width: 1500px) {
-  .logo-kairos {
-    width: 160px;
-  }
-}
-
-@media all and (min-width: 1920px) {
-  .navbar-logo {
-    padding-left: var(--out-wrapper-margin-desktop-xl);
-    padding-right: 4.1%;
-  }
-
-  .navbar__btn-lang-desktop--show {
-    padding-right: var(--out-wrapper-margin-desktop-xl);
   }
 }
 `;
