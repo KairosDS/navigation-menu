@@ -116,7 +116,6 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
     menus.forEach((menu) => {
       const menuID = menu.getAttribute('id');
       const eventID = `dropdown_container_${e.currentTarget.id.toLowerCase()}`;
-   
       if (!menu.classList.contains('inactive') && menuID !== eventID) {
         menu.classList.add('inactive');
       }
@@ -127,7 +126,6 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
     super.connectedCallback();
     const childNodes = this._HTMLChildren();
     [this.mainMenu]= childNodes;
-    console.log(childNodes)
     document.body.addEventListener('click', this._allMenusInactive);
   }
 
@@ -140,24 +138,26 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
     e.stopPropagation();
     e.preventDefault();
     this._allMenusInactive(e);
-    const id = e.currentTarget.id.toLowerCase();
+    const id = e.target.id.toLowerCase();
     const target = this.shadowRoot.querySelector(`#dropdown_container_${id}`);
     target.classList.toggle('inactive');
     if (window.innerWidth < 1024) {
-      this.handleClickBack(e);
+      this.handlIconChange(e);
     }
   }
 
   handleClickEnter(e) {
     this._allMenusInactive(e);
     const id = e.currentTarget.id.toLowerCase();
-    const target = this.shadowRoot.querySelector(`#dropdown_container_${id}`);
+    const indexIdString = e.currentTarget.id.indexOf('-')
+    const idFormated = id.slice(indexIdString + 1)
+    const target = this.shadowRoot.querySelector(`#dropdown_container_${idFormated}`);
     if (target !== null) {
       target.classList.remove('inactive');
     }
   }
 
-  handleClickBack(e) {
+  handlIconChange(e) {
     const menus = this.shadowRoot.querySelectorAll('[id^="dropdown_container_"]');
     menus.forEach((menu, index) => {
       const arrowMenuRight = this.shadowRoot.querySelector(`#arrow-right-navigation_${index}`);
@@ -177,15 +177,12 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
 
 
   renderDropdown(id, dropdownMenu) {
-    console.log(dropdownMenu)
     const HTMLDropdown = [];
     const dropdownMenuKeys = Object.keys(dropdownMenu);
-    console.log(dropdownMenuKeys)
     dropdownMenuKeys.forEach((drodownMenuItem) => {
       const item = dropdownMenu[drodownMenuItem][0];
-      console.log(item)
       HTMLDropdown.push(html`
-        <li part="nav-subitem" class="dropdown-nav-li">
+        <li part="nav-subitem" class="dropdown-nav-li" role="menuitem">
         <a class="drop__menu-link ${classMap({ selected: this.route === item.href })}"
             href="/${this.language}/${item.href}" rel="noopener noreferrer" target="${item.target || '_self'}">
             ${item.content}
@@ -195,7 +192,7 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
     });
     return html`
       <div id="dropdown_container_${id.toLowerCase()}" class="dropdown-services-container inactive" index="${this.indexCounter}">
-        <ul class="dropdown-nav dropdown-services" id="dropdown_services_${id.toLowerCase()}">
+        <ul class="dropdown-nav dropdown-services" id="dropdown_services_${id.toLowerCase()}" role="menubar">
           ${HTMLDropdown.map((el) => el)}
         </ul>
       </div>`;
@@ -205,16 +202,16 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
     const HTMLMenuItemComplex = [];
     HTMLMenuItemComplex.push(html`
      <img id="arrow-left-navigation_${this.indexCounter}"
-        class=" arrow-left-navigation inactive ${menuItem.title.replace(/\s/g, '')}" src="../demo/assets/images/arrow_left.svg"
-        alt="flecha de acceso a submenu" @click="${this.handleClickBack}" index="${this.indexCounter}" />
-      <span part="nav-item" id="${menuItem.id}" role="menuItem" @click="${this.handleClick}" index="${this.indexCounter}"  tabindex="0" class="${classMap({span_icon_decoration: !this.hasDropMenu})}">
+        class=" arrow-left-navigation inactive ${menuItem.title.replace(/\s/g, '')}" src="../demo/assets/images/arrow-left-icon.svg"
+        alt="flecha de acceso a submenu" index="${this.indexCounter}" />
+      <span part="nav-item" index="${this.indexCounter}" tabindex="0" role="menuitem" id="${menuItem.id}" @click="${this.handleClick}">
         ${menuItem.title}
        <img class="${window.innerWidth < 1024 ? 'inactive' : 'arrow-down-dropdown'}" src="../demo/assets/images/arrow_down.svg"
           alt="=>"/>
       </span>
       ${window.innerWidth < 1024 ? html` 
       <img id="arrow-right-navigation_${this.indexCounter}"
-        class="arrow-right-navigation ${menuItem.title.replace(/\s/g, '')}" src="" alt="=>"
+        class="arrow-right-navigation  ${menuItem.title.replace(/\s/g, '')}"  src="../demo/assets/images/arrow-right-icon.svg" alt="=>"
         index="${this.indexCounter}" />`
     : html``}
       ${this.renderDropdown(menuItem.id, menuItem[0])}`);
@@ -228,15 +225,16 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
     const linkItem = `/${this.language}/${menuItemlink.href}`;
     const htmlMenu = html`
       ${menuItem['data-type'] === "link" ? html`
-      <li @keydown="${this.handleClickEnter}" id="${menuItem.id}" class="navbar-list__item" >
+      <li class="navbar-list__item" id="li-${menuItem.id}" role="none" @keydown="${this.handleClickEnter}" >
         <a class=${classMap({selected: this.route === menuItem.href})} 
           href=${linkItem}
-          rel="noopener noreferrer" target="${menuItemlink.target || '_self'}">
+          rel="noopener noreferrer" target="${menuItemlink.target || '_self'}"
+          role="menuitem" >
           ${menuItemlink.content}
         </a>
       </li>
       `
-    : html` <li @keydown="${this.handleClickEnter}" id="${menuItem.id}" class="navbar-list__item">${this.renderMenuItemComplex(menuItem)}</li>`}`;
+    : html` <li @keydown="${this.handleClickEnter}" role="none" id="li-${menuItem.id}" class="navbar-list__item">${this.renderMenuItemComplex(menuItem)}</li>`}`;
     return htmlMenu;
   }
 
@@ -255,7 +253,7 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
         <input type="checkbox" class="navbar__input" id="toggleMenu" />
         <label tabindex="0" class="navbar-menu-icon" for="toggleMenu"></label>
         <nav  role="navigation" class="navbar"  part="nav-bar">
-          <ul class="navbar-list">
+          <ul class="navbar-list" role="menubar">
            ${this.renderMainMenu()}
           </ul>
         </nav>

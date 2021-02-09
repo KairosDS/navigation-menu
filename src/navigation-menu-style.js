@@ -26,10 +26,11 @@ export const wcNameStyles = css`
   position: absolute;
   top: 17px;
   right: 17px;
-  background: url(/assets/images/menu-navigation-xs.svg) no-repeat center;
+  background: url(/demo/assets/images/menu-navigation-xs.svg) no-repeat center;
   background-size: 100%;
   cursor: pointer;
   transition: all 0.3s;
+  outline: none;
 }
 
 .navbar__input {
@@ -38,7 +39,7 @@ export const wcNameStyles = css`
 
 .navbar__input:checked ~ .navbar-menu-icon {
   transform: rotate(90deg);
-  background-image: url(/assets/images/menu-nav-close.svg);
+  background-image: url(/demo/assets/images/menu-nav-close.svg);
 }
 
 .navbar__input:checked ~ .navbar {
@@ -150,22 +151,9 @@ ul li a, span {
     justify-content: space-between;
   }
 
-  .navbar-logo {
-    padding-left: 2%
-  }
-
   .navbar-list__item {
     padding: 0  0 0 8px;
     cursor: pointer; 
-  }
-
-  .navbar__btn-lang-desktop--show {
-    width: auto;
-    padding-right: 1.5%;
-  }
-
-  .navbar__btn-lang-mobile--hide {
-    display: none;
   }
 
   ul li {
@@ -234,6 +222,7 @@ ul li a, span {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    height: 100%;
   }
   
   ul li a, span {
@@ -242,6 +231,9 @@ ul li a, span {
 
   .navbar-list__item {
     padding: 0  0 0 8px;
+    height: 100%;
+    display: flex;
+    align-items: center;
   }
 
 
@@ -278,14 +270,6 @@ ul li a, span {
 }
 
 @media all and (min-width: 1280px) {
-  .navbar__btn-lang-desktop--show {
-    width: auto;
-    padding-right: 9%;
-  }
-
-  .navbar-logo {
-  padding-left: 10%;
-  }
 
   .navbar-list__item {
     padding: 0  0 0 16px;
