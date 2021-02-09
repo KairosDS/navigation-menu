@@ -98,11 +98,11 @@ ul li a, span {
   padding-left: 1%;
 }
 
-.arrow-right-navigation{
+.icon-open-navigation{
   padding-left: 16px;
 }
 
-.arrow-left-navigation{
+.icon-close-navigation{
   padding-right: 16px;
 }
 
@@ -263,7 +263,7 @@ ul li a, span {
   }
 
   
-  .arrow-down-dropdown {
+  .icon-open-navigation {
     padding-left: 3px;
     height: 20px;
   }

@@ -52,22 +52,6 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
        * @property
        * @type { }
        */
-      capacities: {
-        type: Array,
-      },
-      /**
-       *
-       * @property
-       * @type { }
-       */
-      countries: {
-        type: Array,
-      },
-      /**
-       *
-       * @property
-       * @type { }
-       */
       selected: {
         type: String,
       },
@@ -82,18 +66,33 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
       /**
        *
        * @property
-       * @type { Boolean }
+       * @type { String }
        */
-      languageSelected: {
-        type: Boolean,
-        attribute: false,
+      iconDesktopOpen: {
+        type: String,
       },
       /**
        *
        * @property
        * @type { String }
        */
-      lang: {
+      iconDesktopClose: {
+        type: String,
+      },
+      /**
+       *
+       * @property
+       * @type { String }
+       */
+      iconMobileClose: {
+        type: String,
+      },
+      /**
+       *
+       * @property
+       * @type { String }
+       */
+      iconMobileOpen: {
         type: String,
       },
     };
@@ -107,7 +106,6 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
     this.route = window.location.pathname;
     this.language = 'es';
     this.indexCounter = 0;
-    this.hasDropMenu = false;
     this._allMenusInactive = this._allMenusInactive.bind(this);
   }
 
@@ -160,8 +158,8 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
   handlIconChange(e) {
     const menus = this.shadowRoot.querySelectorAll('[id^="dropdown_container_"]');
     menus.forEach((menu, index) => {
-      const arrowMenuRight = this.shadowRoot.querySelector(`#arrow-right-navigation_${index}`);
-      const arrowMenuLeft = this.shadowRoot.querySelector(`#arrow-left-navigation_${index}`);
+      const arrowMenuRight = this.shadowRoot.querySelector(`#icon-open-navigation_${index}`);
+      const arrowMenuLeft = this.shadowRoot.querySelector(`#icon-close-navigation_${index}`);
       const indexMenu = menu.getAttribute('index');
       const indexValue = e.currentTarget.attributes.index.value;
       if (!menu.classList.contains('inactive') && indexMenu === indexValue) {
@@ -201,19 +199,15 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
   renderMenuItemComplex(menuItem) {
     const HTMLMenuItemComplex = [];
     HTMLMenuItemComplex.push(html`
-     <img id="arrow-left-navigation_${this.indexCounter}"
-        class=" arrow-left-navigation inactive ${menuItem.title.replace(/\s/g, '')}" src="../demo/assets/images/arrow-left-icon.svg"
-        alt="flecha de acceso a submenu" index="${this.indexCounter}" />
+     <img id="icon-close-navigation_${this.indexCounter}"
+        class=" icon-close-navigation inactive ${menuItem.title.replace(/\s/g, '')}" src="${this.iconMobileClose}"
+        alt="icono de acceso a submenu" index="${this.indexCounter}" />
       <span part="nav-item" index="${this.indexCounter}" tabindex="0" role="menuitem" id="${menuItem.id}" @click="${this.handleClick}">
         ${menuItem.title}
-       <img class="${window.innerWidth < 1024 ? 'inactive' : 'arrow-down-dropdown'}" src="../demo/assets/images/arrow_down.svg"
-          alt="=>"/>
-      </span>
-      ${window.innerWidth < 1024 ? html` 
-      <img id="arrow-right-navigation_${this.indexCounter}"
-        class="arrow-right-navigation  ${menuItem.title.replace(/\s/g, '')}"  src="../demo/assets/images/arrow-right-icon.svg" alt="=>"
-        index="${this.indexCounter}" />`
-    : html``}
+      </span> 
+      <img id="icon-open-navigation_${this.indexCounter}"
+        class="icon-open-navigation  ${menuItem.title.replace(/\s/g, '')}"  src="${window.innerWidth < 1024 ? this.iconMobileOpen : this.iconDesktopOpen}" alt="=>"
+        index="${this.indexCounter}" />
       ${this.renderDropdown(menuItem.id, menuItem[0])}`);
     this.indexCounter += 1;
     return html`${HTMLMenuItemComplex.map((el) => el)}`;
@@ -221,7 +215,6 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
 
   renderMenuItem(menuItem) {
     const menuItemlink = menuItem[0];
-    this.hasDropMenu = menuItem['data-type'] === "link";
     const linkItem = `/${this.language}/${menuItemlink.href}`;
     const htmlMenu = html`
       ${menuItem['data-type'] === "link" ? html`
