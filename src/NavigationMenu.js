@@ -106,6 +106,10 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
     this.route = window.location.pathname;
     this.language = 'es';
     this.indexCounter = 0;
+    this.iconMobileOpen='./assets/images/arrow-right-icon.svg';
+    this.iconMobileClose='./assets/images/arrow-left-icon.svg';
+    this.iconDesktopOpen='./assets/images/arrow_down.svg';
+    this.iconDesktopClose='./assets/images/menu-nav-close.svg';
     this._allMenusInactive = this._allMenusInactive.bind(this);
   }
 
@@ -113,9 +117,14 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
     const menus = this.shadowRoot.querySelectorAll('[id^="dropdown_container_"]');
     menus.forEach((menu) => {
       const menuID = menu.getAttribute('id');
+      const menuIndex = menu.getAttribute('index');
       const eventID = `dropdown_container_${e.currentTarget.id.toLowerCase()}`;
+      const iconMenuRight = this.shadowRoot.querySelector(`#icon-open-navigation_${menuIndex}`);
+      const iconMenuLeft = this.shadowRoot.querySelector(`#icon-close-navigation_${menuIndex}`);
       if (!menu.classList.contains('inactive') && menuID !== eventID) {
         menu.classList.add('inactive');
+        iconMenuRight.classList.remove('inactive');
+        iconMenuLeft.classList.add('inactive')
       }
     });
   }
@@ -139,9 +148,7 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
     const id = e.target.id.toLowerCase();
     const target = this.shadowRoot.querySelector(`#dropdown_container_${id}`);
     target.classList.toggle('inactive');
-    if (window.innerWidth < 1024) {
-      this.handlIconChange(e);
-    }
+    this.handlIconChange(target);
   }
 
   handleClickEnter(e) {
@@ -150,26 +157,17 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
     const indexIdString = e.currentTarget.id.indexOf('-')
     const idFormated = id.slice(indexIdString + 1)
     const target = this.shadowRoot.querySelector(`#dropdown_container_${idFormated}`);
-    if (target !== null) {
+    if (target !== null){
       target.classList.remove('inactive');
     }
   }
 
-  handlIconChange(e) {
-    const menus = this.shadowRoot.querySelectorAll('[id^="dropdown_container_"]');
-    menus.forEach((menu, index) => {
-      const arrowMenuRight = this.shadowRoot.querySelector(`#icon-open-navigation_${index}`);
-      const arrowMenuLeft = this.shadowRoot.querySelector(`#icon-close-navigation_${index}`);
-      const indexMenu = menu.getAttribute('index');
-      const indexValue = e.currentTarget.attributes.index.value;
-      if (!menu.classList.contains('inactive') && indexMenu === indexValue) {
-        arrowMenuRight.classList.add('inactive');
-        arrowMenuLeft.classList.remove('inactive');
-      } else {
-        arrowMenuRight.classList.remove('inactive');
-        arrowMenuLeft.classList.add('inactive');
-      }
-    });
+  handlIconChange(target) {
+    const indexValue = target.attributes.index.value;
+    const iconMenuRight = this.shadowRoot.querySelector(`#icon-open-navigation_${indexValue}`);
+    const iconMenuLeft = this.shadowRoot.querySelector(`#icon-close-navigation_${indexValue}`);
+    iconMenuRight.classList.toggle('inactive');
+    iconMenuLeft.classList.toggle('inactive')  
   }
 
 
@@ -180,9 +178,10 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
     dropdownMenuKeys.forEach((drodownMenuItem) => {
       const item = dropdownMenu[drodownMenuItem][0];
       HTMLDropdown.push(html`
-        <li part="nav-subitem" class="dropdown-nav-li" role="menuitem">
+        <li part="nav-subitem" class="dropdown-nav-li" role="none" >
         <a class="drop__menu-link ${classMap({ selected: this.route === item.href })}"
-            href="/${this.language}/${item.href}" rel="noopener noreferrer" target="${item.target || '_self'}">
+            href="/${this.language}/${item.href}" rel="noopener noreferrer" target="${item.target || '_self'}"
+            role="menuitem">
             ${item.content}
           </a>
         </li>` 
@@ -199,15 +198,16 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
   renderMenuItemComplex(menuItem) {
     const HTMLMenuItemComplex = [];
     HTMLMenuItemComplex.push(html`
-     <img id="icon-close-navigation_${this.indexCounter}"
-        class=" icon-close-navigation inactive ${menuItem.title.replace(/\s/g, '')}" src="${this.iconMobileClose}"
-        alt="icono de acceso a submenu" index="${this.indexCounter}" />
       <span part="nav-item" index="${this.indexCounter}" tabindex="0" role="menuitem" id="${menuItem.id}" @click="${this.handleClick}">
+      <img id="icon-close-navigation_${this.indexCounter}"
+        class="icon-close-navigation inactive ${menuItem.title.replace(/\s/g, '')}" src="${window.innerWidth < 1024 ? this.iconMobileClose : this.iconDesktopClose}"
+        alt="icono de acceso a submenu" index="${this.indexCounter}" />
         ${menuItem.title}
-      </span> 
-      <img id="icon-open-navigation_${this.indexCounter}"
+        <img id="icon-open-navigation_${this.indexCounter}"
         class="icon-open-navigation  ${menuItem.title.replace(/\s/g, '')}"  src="${window.innerWidth < 1024 ? this.iconMobileOpen : this.iconDesktopOpen}" alt="=>"
         index="${this.indexCounter}" />
+      </span> 
+      
       ${this.renderDropdown(menuItem.id, menuItem[0])}`);
     this.indexCounter += 1;
     return html`${HTMLMenuItemComplex.map((el) => el)}`;
@@ -222,7 +222,7 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
         <a class=${classMap({selected: this.route === menuItem.href})} 
           href=${linkItem}
           rel="noopener noreferrer" target="${menuItemlink.target || '_self'}"
-          role="menuitem" >
+          role="menuitem">
           ${menuItemlink.content}
         </a>
       </li>
@@ -241,6 +241,7 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
   }
 
   render() {
+    console.log(this.iconDesktopClose)
     return html`
       <div class="navbar-container"part="nav-bar-container">
         <input type="checkbox" class="navbar__input" id="toggleMenu" />
