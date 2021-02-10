@@ -7,6 +7,7 @@ export const wcNameStyles = css`
   height: 100%;
 
 }
+
 .navbar {
   width: 92vw;
   height: 90vh;
@@ -18,7 +19,6 @@ export const wcNameStyles = css`
   transition: all 0.75s ease;
   font-size: 16px;
 }
-
 
 .navbar-menu-icon {
   width: 14px;
@@ -45,7 +45,6 @@ export const wcNameStyles = css`
 .navbar__input:checked ~ .navbar {
   right: 0;
 }
-
 
 .navbar-list {
   flex-direction: column;
@@ -77,32 +76,11 @@ ul li a, span {
 
 }
 
-.navbar__btn-lang-mobile--show {
-  width: 100%;
-  position: absolute;
-  bottom: -1px;
-  right: 0%;
-  heigth: 48px;
-  background-color: #F5F6FA;
-}
-
-.navbar__btn-lang-desktop--hide {
-  display: none;
-}
-
-.navbar-logo__link {
-  text-decoration: none;
-}
-
-.navbar-logo {
-  padding-left: 1%;
-}
-
-.icon-open-navigation{
+.icon-open-navigation {
   padding-left: 16px;
 }
 
-.icon-close-navigation{
+.icon-close-navigation {
   padding-right: 16px;
 }
 
@@ -120,7 +98,6 @@ ul li a, span {
   transition: all 0.75s ease;
   color: #FFFFFF;
 }
-
 
 
 /* DESKTOP STYLES  */
@@ -152,13 +129,15 @@ ul li a, span {
   }
 
   .navbar-list__item {
-    padding: 0  0 0 8px;
     cursor: pointer; 
+    padding: 0  0 0 8px;
+    height: 100%;
+    display: flex;
+    align-items: center;
   }
 
   ul li {
     margin: 0;
-   
   }
 
   ul li a:hover{
@@ -209,7 +188,6 @@ ul li a, span {
     outline: none;
   }
 
-
   .navbar-menu-icon {
     display: none;
   }
@@ -229,30 +207,11 @@ ul li a, span {
     color: #4D4D4E;
   }
 
-  .navbar-list__item {
-    padding: 0  0 0 8px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-  }
-
 
   .dropdown-services-container {
     position: absolute;
     top: 60px;
     box-shadow: 0px 2px 6px rgba(178, 176, 176, 0.5);
-  }
-
-  .dropdown-about-container {
-    position: absolute;
-    top: 40px;
-    right: 40%;
-  }
-
-  .dropdown-capacities-container {
-    position: absolute;
-    top: 0px;
-    left: 220px;
   }
 
   .dropdown-nav {
@@ -262,7 +221,6 @@ ul li a, span {
     max-width: 286px;
   }
 
-  
   .icon-open-navigation {
     padding-left: 3px;
     height: 20px;
@@ -270,7 +228,6 @@ ul li a, span {
 }
 
 @media all and (min-width: 1280px) {
-
   .navbar-list__item {
     padding: 0  0 0 16px;
   }

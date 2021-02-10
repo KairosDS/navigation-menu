@@ -170,6 +170,15 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
     iconMenuLeft.classList.toggle('inactive')  
   }
 
+  hrefFormated(linkPath) {
+    const regExp= '^https?:\/\/(.*)'; 
+    const findRegExp = linkPath.search(regExp)
+    console.log(findRegExp)
+    if(findRegExp === -1){
+      return `${this.language}/${linkPath}`
+    }
+    return `${linkPath}`
+  }
 
 
   renderDropdown(id, dropdownMenu) {
@@ -177,10 +186,11 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
     const dropdownMenuKeys = Object.keys(dropdownMenu);
     dropdownMenuKeys.forEach((drodownMenuItem) => {
       const item = dropdownMenu[drodownMenuItem][0];
+
       HTMLDropdown.push(html`
         <li part="nav-subitem" class="dropdown-nav-li" role="none" >
         <a class="drop__menu-link ${classMap({ selected: this.route === item.href })}"
-            href="/${this.language}/${item.href}" rel="noopener noreferrer" target="${item.target || '_self'}"
+            href="${this.hrefFormated(item.href)}" rel="noopener noreferrer" target="${item.target || '_self'}"
             role="menuitem">
             ${item.content}
           </a>
@@ -215,12 +225,11 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
 
   renderMenuItem(menuItem) {
     const menuItemlink = menuItem[0];
-    const linkItem = `/${this.language}/${menuItemlink.href}`;
     const htmlMenu = html`
       ${menuItem['data-type'] === "link" ? html`
       <li class="navbar-list__item" id="li-${menuItem.id}" role="none" @keydown="${this.handleClickEnter}" >
-        <a class=${classMap({selected: this.route === menuItem.href})} 
-          href=${linkItem}
+        <a class=${classMap({selected: this.route === menuItemlink.href})} 
+          href="${this.hrefFormated(menuItemlink.href)}"
           rel="noopener noreferrer" target="${menuItemlink.target || '_self'}"
           role="menuitem">
           ${menuItemlink.content}
@@ -241,7 +250,6 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
   }
 
   render() {
-    console.log(this.iconDesktopClose)
     return html`
       <div class="navbar-container"part="nav-bar-container">
         <input type="checkbox" class="navbar__input" id="toggleMenu" />
