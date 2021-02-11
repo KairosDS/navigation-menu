@@ -106,10 +106,9 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
     this.route = window.location.pathname;
     this.language = 'es';
     this.indexCounter = 0;
-    this.iconMobileOpen='./assets/images/arrow-right-icon.svg';
-    this.iconMobileClose='./assets/images/arrow-left-icon.svg';
-    this.iconDesktopOpen='./assets/images/arrow_down.svg';
-    this.iconDesktopClose='./assets/images/menu-nav-close.svg';
+    this.iconMobileOpen='/assets/images/arrow-right-icon.svg';
+    this.iconMobileClose='/assets/images/arrow-left-icon.svg';
+    this.iconDesktop='/assets/images/arrow_down.svg';
     this._allMenusInactive = this._allMenusInactive.bind(this);
   }
 
@@ -145,10 +144,12 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
     e.stopPropagation();
     e.preventDefault();
     this._allMenusInactive(e);
-    const id = e.target.id.toLowerCase();
+    const id = e.currentTarget.id.toLowerCase();
     const target = this.shadowRoot.querySelector(`#dropdown_container_${id}`);
-    target.classList.toggle('inactive');
-    this.handlIconChange(target);
+    if (target !== null){
+      target.classList.toggle('inactive');
+      this.handlIconChange(target);
+    }
   }
 
   handleClickEnter(e) {
@@ -173,8 +174,7 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
   hrefFormated(linkPath) {
     const regExp= '^https?:\/\/(.*)'; 
     const findRegExp = linkPath.search(regExp)
-    console.log(findRegExp)
-    if(findRegExp === -1){
+    if(findRegExp === -1) {
       return `${this.language}/${linkPath}`
     }
     return `${linkPath}`
@@ -198,7 +198,7 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
       );
     });
     return html`
-      <div id="dropdown_container_${id.toLowerCase()}" class="dropdown-services-container inactive" index="${this.indexCounter}">
+      <div id="dropdown_container_${id.toLowerCase()}" class="dropdown-services-container inactive" index="${this.indexCounter}" part="nav-dropdrown">
         <ul class="dropdown-nav dropdown-services" id="dropdown_services_${id.toLowerCase()}" role="menubar">
           ${HTMLDropdown.map((el) => el)}
         </ul>
@@ -208,13 +208,13 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
   renderMenuItemComplex(menuItem) {
     const HTMLMenuItemComplex = [];
     HTMLMenuItemComplex.push(html`
-      <span part="nav-item" index="${this.indexCounter}" tabindex="0" role="menuitem" id="${menuItem.id}" @click="${this.handleClick}">
+      <span part="nav-item" index="${this.indexCounter}" tabindex="0" role="menuitem" id="${menuItem.id}" class="navbar-list__title" @click="${this.handleClick}">
       <img id="icon-close-navigation_${this.indexCounter}"
-        class="icon-close-navigation inactive ${menuItem.title.replace(/\s/g, '')}" src="${window.innerWidth < 1024 ? this.iconMobileClose : this.iconDesktopClose}"
+        class="icon-close-navigation inactive ${menuItem.title.replace(/\s/g, '')}" src="${this.iconMobileClose}"
         alt="icono de acceso a submenu" index="${this.indexCounter}" />
         ${menuItem.title}
         <img id="icon-open-navigation_${this.indexCounter}"
-        class="icon-open-navigation  ${menuItem.title.replace(/\s/g, '')}"  src="${window.innerWidth < 1024 ? this.iconMobileOpen : this.iconDesktopOpen}" alt="=>"
+        class="icon-open-navigation ${menuItem.title.replace(/\s/g, '')} ${window.innerWidth > 1024 ? 'animate-icon' : ''}"  src="${window.innerWidth < 1024 ? this.iconMobileOpen : this.iconDesktop}" alt="=>"
         index="${this.indexCounter}" />
       </span> 
       
@@ -227,7 +227,7 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
     const menuItemlink = menuItem[0];
     const htmlMenu = html`
       ${menuItem['data-type'] === "link" ? html`
-      <li class="navbar-list__item" id="li-${menuItem.id}" role="none" @keydown="${this.handleClickEnter}" >
+      <li class="navbar-list__item" id="li-${menuItem.id}" role="none" @keydown="${this.handleClickEnter}" part="nav-li" >
         <a class=${classMap({selected: this.route === menuItemlink.href})} 
           href="${this.hrefFormated(menuItemlink.href)}"
           rel="noopener noreferrer" target="${menuItemlink.target || '_self'}"
@@ -236,7 +236,7 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
         </a>
       </li>
       `
-    : html` <li @keydown="${this.handleClickEnter}" role="none" id="li-${menuItem.id}" class="navbar-list__item">${this.renderMenuItemComplex(menuItem)}</li>`}`;
+    : html` <li @keydown="${this.handleClickEnter}" role="none" id="li-${menuItem.id}" part="nav-li" class="navbar-list__item">${this.renderMenuItemComplex(menuItem)}</li>`}`;
     return htmlMenu;
   }
 
@@ -251,16 +251,11 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
 
   render() {
     return html`
-      <div class="navbar-container"part="nav-bar-container">
-        <input type="checkbox" class="navbar__input" id="toggleMenu" />
-        <label tabindex="0" class="navbar-menu-icon" for="toggleMenu"></label>
         <nav  role="navigation" class="navbar"  part="nav-bar">
-          <ul class="navbar-list" role="menubar">
+          <ul class="navbar-list" role="menubar" part="nav-ul">
            ${this.renderMainMenu()}
           </ul>
         </nav>
-
-      </div>
     `;
   }
 }
