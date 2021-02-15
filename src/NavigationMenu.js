@@ -30,6 +30,7 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
        */
       language: {
         type: String,
+        attribute: 'language'
       },
       /**
        *
@@ -62,6 +63,7 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
        */
       iconDesktop: {
         type: String,
+        attribute: 'icon-desktop'
       },
       /**
        *
@@ -70,6 +72,7 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
        */
       iconMobileClose: {
         type: String,
+        attribute: 'icon-mobile-close'
       },
       /**
        *
@@ -78,6 +81,7 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
        */
       iconMobileOpen: {
         type: String,
+        attribute: 'icon-mobile-open'
       },
     };
   }
