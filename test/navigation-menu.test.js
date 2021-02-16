@@ -3,7 +3,7 @@
 import { html, fixture, expect } from "@open-wc/testing";
 import "../navigation-menu";
 
-describe("KwLanguages", () => {
+describe("NavigationMenu", () => {
   it("should have the basic template", async () => {
     const el = await fixture(
       html`
