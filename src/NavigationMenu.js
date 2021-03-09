@@ -174,15 +174,21 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
     dropdownMenuKeys.forEach((drodownMenuItem) => {
       const item = dropdownMenu[drodownMenuItem][0];
       const linkHref = this.hrefFormated(item.href);
+      console.log(linkHref)
       HTMLDropdown.push(html`
+      ${linkHref ? html`
         <li part="nav-subitem" class="dropdown-nav-li" role="none" >
         <a class="drop__menu-link ${classMap({ selected: this.route === linkHref })}"
             href="${linkHref}" rel="noopener noreferrer" target="${item.target || '_self'}"
             role="menuitem">
             ${item.content}
           </a>
-        </li>` 
-      );
+        </li>` : html`
+        <li class="dropdown-nav-li link-itself" id="${item.id}">
+        <a class="drop__menu-link"
+         href="${this.route === '/' || this.route === `/${this.language}/` ? `#${item.id}` : `/${this.language}/#${item.id}`}">${item.title}</a>
+      </li>`}
+      `);
     });
     return html`
       <div id="dropdown_container_${id.toLowerCase()}" class="dropdown-services-container inactive" index="${this.indexCounter}" part="nav-dropdrown">
@@ -195,7 +201,7 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
   renderMenuItemComplex(menuItem) {
     const HTMLMenuItemComplex = [];
     HTMLMenuItemComplex.push(html`
-      <span part="nav-item" index="${this.indexCounter}" tabindex="0" role="menuitem" id="${menuItem.id}" class="navbar-list__title" @click="${this.handleClick}">
+      <span part="nav-item" index="${this.indexCounter}" tabindex="0" role="none" id="${menuItem.id}" class="navbar-list__title" @click="${this.handleClick}">
         <img id="icon-close-navigation_${this.indexCounter}"
         class="icon-close-navigation inactive ${menuItem.title.replace(/\s/g, '')}" src="${this.iconMobileClose}"
         alt="icono de acceso a submenu" index="${this.indexCounter}" />
@@ -237,7 +243,7 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
 
   render() {
     return html`
-      <nav  role="navigation" class="navbar"  part="nav-bar">
+      <nav  role="navigation" class="navigation-menu navbar"  part="nav-bar">
         <ul class="navbar-list" role="menubar" part="nav-ul">
           ${this.renderMainMenu()}
         </ul>
