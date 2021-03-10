@@ -83,6 +83,16 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
         type: String,
         attribute: 'icon-mobile-open'
       },
+      /**
+       *
+       * @property
+       * @type { String }
+       */
+       urlBase: {
+        type: String,
+        attribute: 'url-base'
+      },
+
     };
   }
 
@@ -92,6 +102,7 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
     this.selected = '';
     this.route = window.location.pathname;
     this.language = 'es';
+    this.urlBase = '';
     this.indexCounter = 0;
     this.iconMobileOpen='/assets/images/arrow-right-icon.svg';
     this.iconMobileClose='/assets/images/arrow-left-icon.svg';
@@ -160,33 +171,42 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
 
   hrefFormated(linkPath) {
     const regExp= '^https?:\/\/(.*)'; 
-    const findRegExp = linkPath.search(regExp)
+    const findRegExp = linkPath.search(regExp);
     if(findRegExp === -1) {
-      return `${this.language}/${linkPath}`;
+      return this.hrefToIdFormated(linkPath)
     }
-    return `${linkPath}`;
+    return linkPath;
   }
 
+  hrefToIdFormated (linkPath) {
+  console.log(this.urlBase)
+  const hasURLBase = !this.urlBase ? `/${this.language}/${linkPath}` : `${this.urlBase}${this.language}/${linkPath}`;
+  if(linkPath.indexOf('#') === 0){
+    return `/${this.route}${linkPath}`
+  }else{
+    return hasURLBase;
+  }
+   
+  }
 
   renderDropdown(id, dropdownMenu) {
     const HTMLDropdown = [];
     const dropdownMenuKeys = Object.keys(dropdownMenu);
     dropdownMenuKeys.forEach((drodownMenuItem) => {
       const item = dropdownMenu[drodownMenuItem][0];
+      const selfLink = item.href.includes('#');
       const linkHref = this.hrefFormated(item.href);
-      console.log(linkHref)
       HTMLDropdown.push(html`
-      ${linkHref ? html`
+      ${!selfLink ? html`
         <li part="nav-subitem" class="dropdown-nav-li" role="none" >
         <a class="drop__menu-link ${classMap({ selected: this.route === linkHref })}"
-            href="${linkHref}" rel="noopener noreferrer" target="${item.target || '_self'}"
+            href="${`${linkHref}`}" rel="noopener noreferrer" target="${item.target || '_self'}"
             role="menuitem">
             ${item.content}
           </a>
         </li>` : html`
         <li class="dropdown-nav-li link-itself" id="${item.id}">
-        <a class="drop__menu-link"
-         href="${this.route === '/' || this.route === `/${this.language}/` ? `#${item.id}` : `/${this.language}/#${item.id}`}">${item.title}</a>
+        <a class="drop__menu-link" href="${linkHref}">${item.content}</a>
       </li>`}
       `);
     });
