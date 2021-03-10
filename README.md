@@ -7,37 +7,24 @@ Lit-Element web component navigation menu.
 ```
 <h2>Basic navigation-menu Demo</h2>
 <h3>Demo</h3>
-<navigation-menu language="es" icon-mobile-open="/assets/images/icon.svg" icon-mobile-close="/assets/images/icon.svg" icon-desktop="/assets/images/icon.svg">
+<navigation-menu url-base="http://localhost:8000/demo/"  language="es" icon-mobile-open="/assets/images/arrow-right-icon.svg" icon-mobile-close="/assets/images/arrow-left-icon.svg">
   <ul>
     <li id="item1" title="ITEM-1">
       <ul>
-        <li id="subitem1"  title="subitem 1">
-          <a href="https://subitem1.com/" aria-label="Abre misma ventana página SubItem1" target="_self">SUB-ITEM-1</a>
-        </li>
-        <li id="subitem2"  title="subitem 2">
-          <a href="subtitem2.html" aria-label="Abre misma ventana página SubItem2" target="_self">SUB-ITEM-2</a>
-        </li>
+        <li id="subitem1"  title="subitem 1"><a href="https://subitem1.com/" aria-label="Abre misma ventana página SubItem1" target="_self">SUB-ITEM-1</a></li>
+        <li id="subitem2"  title="subitem 2"><a href="subtitem2.html" aria-label="Abre misma ventana página SubItem2" target="_self">SUB-ITEM-2</a></li>
+        <li id="subitem3"  title="subitem 3"><a href="#punto" aria-label="Abre misma ventana página SubItem2" target="_self">SUB-ITEM32</a></li>
       </ul>
     </li>
     <li id="item2" title="ITEM-2">
       <ul>
-        <li id="subitem3"  title="subitem 3">
-          <a href="subtitem3.html" aria-label="Abre misma ventana página SubItem3" target="_self">SUB-ITEM-3</a>
-        </li>
-        <li id="subitem4"  title="subitem 4">
-          <a href="subtitem4.html" aria-label="Abre misma ventana página SubItem4" target="_self">SUB-ITEM-4</a>
-        </li>
+        <li id="subitem3"  title="subitem 3"><a href="subtitem3.html" aria-label="Abre misma ventana página SubItem3" target="_self">SUB-ITEM-3</a></li>
+        <li id="subitem4"  title="subitem 4"><a href="sub-item.html#punto2" aria-label="Abre misma ventana página SubItem4" target="_self">SUB-ITEM-4</a></li>
       </ul>
     </li>
-    <li data-type="link" id="item3" title="item 3">
-      <a href="item3.html" aria-label="Abre misma ventana página Item3" target="_self">ITEM-3</a>
-    </li>
-    <li data-type="link" id="item4" title="item 4">
-      <a href="https://item4.com/" aria-label="Abre misma ventana página Item4"  target="_self">ITEM-4</a>
-    </li>
-    <li data-type="link" id="item5" title="item 5">
-      <a href="item5.html" aria-label="Abre misma ventana página Item5" target="_self">ITEM-5</a>
-    </li>
+    <li data-type="link" id="item3" title="item 3"><a href="sub-item.html" aria-label="Abre misma ventana página Item3" target="_self">ITEM-3</a></li>
+    <li data-type="link" id="item4" title="item 4"><a href="index.html" aria-label="Abre misma ventana página Item4"  target="_self">ITEM-4</a></li>
+    <li data-type="link" id="item5" title="item 5"><a href="https://item5.html" aria-label="Abre misma ventana página Item5" target="_self">ITEM-5</a></li>
   </ul>
 </navigation-menu>
 
@@ -65,6 +52,7 @@ Lit-Element web component navigation menu.
 |iconMobileOpen   |  icon-mobile-open     |string    |Path of the opening icon image in mobile version |
 |iconMobileClose  |  icon-mobile-close    |string 	 |Path of the close icon image in mobile version   |
 |iconDesktop	    |  icon-desktop         |string	   |Path of the icon image in desktop version        |
+|urlBase          |  url-base             |string	   |Path of the main route when is not the same to / |
 
 
 ## CSS Shadow Parts
