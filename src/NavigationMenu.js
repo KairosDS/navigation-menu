@@ -179,7 +179,6 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
   }
 
   hrefToIdFormated (linkPath) {
-  console.log(this.urlBase)
   const hasURLBase = !this.urlBase ? `/${this.language}/${linkPath}` : `${this.urlBase}${this.language}/${linkPath}`;
   if(linkPath.indexOf('#') === 0){
     return `/${this.route}${linkPath}`
@@ -192,7 +191,7 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
   renderDropdown(id, dropdownMenu) {
     const HTMLDropdown = [];
     const dropdownMenuKeys = Object.keys(dropdownMenu);
-    dropdownMenuKeys.forEach((drodownMenuItem) => {
+    dropdownMenuKeys.forEach((drodownMenuItem, index) => {
       const item = dropdownMenu[drodownMenuItem][0];
       const selfLink = item.href.includes('#');
       const linkHref = this.hrefFormated(item.href);
@@ -205,7 +204,7 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
             ${item.content}
           </a>
         </li>` : html`
-        <li class="dropdown-nav-li link-itself" id="${item.id}">
+        <li class="dropdown-nav-li link-itself" id="item-${index}">
         <a class="drop__menu-link" href="${linkHref}">${item.content}</a>
       </li>`}
       `);
@@ -221,7 +220,7 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
   renderMenuItemComplex(menuItem) {
     const HTMLMenuItemComplex = [];
     HTMLMenuItemComplex.push(html`
-      <span part="nav-item" index="${this.indexCounter}" tabindex="0" role="none" id="${menuItem.id}" class="navbar-list__title" @click="${this.handleClick}">
+      <span part="nav-item" index="${this.indexCounter}" tabindex="0" role="menuitem" id="${menuItem.id}" class="navbar-list__title" @click="${this.handleClick}">
         <img id="icon-close-navigation_${this.indexCounter}"
         class="icon-close-navigation inactive ${menuItem.title.replace(/\s/g, '')}" src="${this.iconMobileClose}"
         alt="icono de acceso a submenu" index="${this.indexCounter}" />
