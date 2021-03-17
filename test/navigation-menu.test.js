@@ -89,17 +89,6 @@ describe("NavigationMenu", () => {
     expect(func).to.equal('https://subitem1.com/');
   });
 
-  // it('Open and close menu: Called _toggleMenu method', async () => {
-  //   const el = await fixture(html` <kds-listbox></kds-listbox> `);
-  //   const spy = sinon.spy(el, '_toggleMenu');
-  //   const button = el.shadowRoot.querySelector('.kds-listbox__head');
-  //   button.click();
-  //   setTimeout(() => {
-  //     expect(spy.called).to.be.true;
-  //   }, 200);
-  //   expect(spy.called).to.be.false;
-  // });
-
   it('User click on menu: Called handlIconChange method', async () => {
       const el = await fixture(
         html`
