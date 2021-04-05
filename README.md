@@ -62,7 +62,9 @@ Lit-Element web component navigation menu.
 |nav-bar		      |  The nav bar                                                  |
 |nav-ul           |  The list container                                           |
 |nav-li           |  The items wrapper displayed into the navigation menu         |
-|nav-item   	    |  The items  displayed into the navigation                     |
+|nav-icon       	|  The icons displayed into nav-li                              |
+|nav-link   	    |  The link  displayed into nav-li items with no drop-down menu |
+|nav-link-selected|  The link  displayed into nav-li that has same url tha the selected page          | 
 |nav-subitem   	  |  The items wrapper displayed into the secondary drop down menu|
 |nav-dropdrown   	|  The container that drop down in desktop view                 |
 

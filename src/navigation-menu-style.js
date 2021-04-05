@@ -170,12 +170,12 @@ ul li a {
     position: absolute;
     top: 22px;
     left: 0;
-    min-width: 170px;
+    min-width: 180px;
     box-shadow: 0px 2px 6px rgba(178, 176, 176, 0.5);
     background-color: white;
     box-sizing: border-box;
     padding: 24px 38px 38px 38px;
-    max-width: 286px;
+    max-width: fit-content;
   }
 
 
@@ -188,8 +188,9 @@ ul li a {
     display: none; 
   }
   .animate-icon {
-    transition: all 0.5s ease 0s;
+    transition: all 0.4s ease 0s;
   }
+
   .animate-icon.inactive {
     display: block;
     transform: rotate(180deg);

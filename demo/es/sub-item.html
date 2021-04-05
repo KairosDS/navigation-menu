@@ -6,7 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="module" src="../../navigation-menu.js"></script>
     <title>Document</title>
+    <style>
+       navigation-menu::part(nav-link-selected) {
+          background-color: red;
+        }
+    </style>
 </head>
+
 <body>
     <h1>SOY OTRA PAGINA</h1>
     <navigation-menu url-base="http://localhost:8000/demo/"  language="es" icon-mobile-open="/assets/images/arrow-right-icon.svg" icon-mobile-close="/assets/images/arrow-left-icon.svg">

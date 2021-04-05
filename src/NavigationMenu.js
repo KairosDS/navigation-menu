@@ -104,9 +104,9 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
     this.language = 'es';
     this.urlBase = '';
     this.indexCounter = 0;
-    this.iconMobileOpen='/assets/images/arrow-right-icon.svg';
-    this.iconMobileClose='/assets/images/arrow-left-icon.svg';
-    this.iconDesktop='/assets/images/arrow_down.svg';
+    this.iconMobileOpen='';
+    this.iconMobileClose='';
+    this.iconDesktop='';
     this._allMenusInactive = this._allMenusInactive.bind(this);
   }
 
@@ -120,8 +120,12 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
       const iconMenuLeft = this.shadowRoot.querySelector(`#icon-close-navigation_${menuIndex}`);
       if (!menu.classList.contains('inactive') && menuID !== eventID) {
         menu.classList.add('inactive');
-        iconMenuRight.classList.remove('inactive');
-        iconMenuLeft.classList.add('inactive');
+        if(iconMenuLeft){
+          iconMenuLeft.classList.add('inactive');
+        }
+        if(iconMenuRight){
+          iconMenuRight.classList.remove('inactive');
+        }
       }
     });
   }
@@ -165,8 +169,13 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
     const indexValue = target.attributes.index.value;
     const iconMenuRight = this.shadowRoot.querySelector(`#icon-open-navigation_${indexValue}`);
     const iconMenuLeft = this.shadowRoot.querySelector(`#icon-close-navigation_${indexValue}`);
-    iconMenuRight.classList.toggle('inactive');
-    iconMenuLeft.classList.toggle('inactive');  
+    if(iconMenuRight){
+      iconMenuRight.classList.toggle('inactive');
+    }
+    if(iconMenuLeft){
+      iconMenuLeft.classList.toggle('inactive');  
+    }
+    
   }
 
   hrefFormated(linkPath) {
@@ -181,7 +190,7 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
   hrefToIdFormated (linkPath) {
   const hasURLBase = !this.urlBase ? `/${this.language}/${linkPath}` : `${this.urlBase}${this.language}/${linkPath}`;
   if(linkPath.indexOf('#') === 0){
-    return `/${this.route}${linkPath}`
+    return `${this.route}${linkPath}`
   }else{
     return hasURLBase;
   }
@@ -198,14 +207,17 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
       HTMLDropdown.push(html`
       ${!selfLink ? html`
         <li part="nav-subitem" class="dropdown-nav-li" role="none" >
-        <a class="drop__menu-link ${classMap({ selected: this.route === linkHref })}"
+        <a class="drop__menu-link ${classMap({ selected: this.route === linkHref })}" part="${this.route === linkHref ? 'nav-link-selected' : 'nav-link'}"
             href="${`${linkHref}`}" rel="noopener noreferrer" target="${item.target || '_self'}"
             role="menuitem">
             ${item.content}
           </a>
         </li>` : html`
         <li class="dropdown-nav-li link-itself" id="item-${index}">
-        <a class="drop__menu-link" href="${linkHref}">${item.content}</a>
+        <a class="drop__menu-link" href="${linkHref}" part="nav-link"
+          target="${item.target || '_self'}"
+          role="menuitem"
+        >${item.content}</a>
       </li>`}
       `);
     });
@@ -220,14 +232,17 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
   renderMenuItemComplex(menuItem) {
     const HTMLMenuItemComplex = [];
     HTMLMenuItemComplex.push(html`
-      <span part="nav-item" index="${this.indexCounter}" tabindex="0" role="menuitem" id="${menuItem.id}" class="navbar-list__title" @click="${this.handleClick}">
-        <img id="icon-close-navigation_${this.indexCounter}"
+      <span part="nav-link" index="${this.indexCounter}" tabindex="0" role="menuitem" id="${menuItem.id}" class="navbar-list__title" @click="${this.handleClick}">
+      ${this.iconMobileOpen !== '' && window.innerWidth < 1029 ? html` <img id="icon-close-navigation_${this.indexCounter}" part="nav-icon"
         class="icon-close-navigation inactive ${menuItem.title.replace(/\s/g, '')}" src="${this.iconMobileClose}"
-        alt="icono de acceso a submenu" index="${this.indexCounter}" />
+        alt="icono de acceso a submenu" index="${this.indexCounter}" />` : ''}
           ${menuItem.title}
-        <img id="icon-open-navigation_${this.indexCounter}"
-        class="icon-open-navigation ${menuItem.title.replace(/\s/g, '')} ${window.innerWidth > 1024 ? 'animate-icon' : ''}"  src="${window.innerWidth < 1024 ? this.iconMobileOpen : this.iconDesktop}" alt="=>"
-        index="${this.indexCounter}" />
+        ${this.iconDesktop !== '' && window.innerWidth > 1029 ? html`<img id="icon-open-navigation_${this.indexCounter}"  part="nav-icon"
+          class="icon-open-navigation ${menuItem.title.replace(/\s/g, '')} animate-icon"  src="${this.iconDesktop}" alt="=>"
+          index="${this.indexCounter}" />` : ''}
+        ${this.iconMobileOpen !== '' && window.innerWidth < 1029 ? html`<img id="icon-open-navigation_${this.indexCounter}"  part="nav-icon"
+        class="icon-open-navigation ${menuItem.title.replace(/\s/g, '')}"  src="${this.iconMobileOpen}" alt="=>"
+        index="${this.indexCounter}" />` : ''}
       </span> 
       ${this.renderDropdown(menuItem.id, menuItem[0])}`);
     this.indexCounter += 1;
@@ -240,6 +255,7 @@ export class NavigationMenu extends HTMLChildrenMixin(LitElement)  {
       ${menuItem['data-type'] === "link" ? html`
       <li class="navbar-list__item" id="li-${menuItem.id}" role="none" @keydown="${this.handleClickEnter}" part="nav-li" >
         <a class=${classMap({selected: this.route === this.hrefFormated(menuItemlink.href)})} 
+        part="nav-link"
           href="${this.hrefFormated(menuItemlink.href)}"
           rel="noopener noreferrer" target="${menuItemlink.target || '_self'}"
           role="menuitem">
