@@ -64,9 +64,21 @@ ul li a {
   padding-right: 16px;
 }
 
-.inactive {
-  display: none;
+.dropdown-services-container {
+  max-height: 300px;
+  height: auto;
+  visibility: visible;
+  opacity: 1;
+  transition: all 0.4s  ease;
 }
+
+.inactive {
+  max-height:0;
+  opacity: 0;
+  visibility: hidden;
+}
+
+
 
 
 /* DESKTOP STYLES  */
@@ -188,11 +200,16 @@ ul li a {
     display: none; 
   }
   .animate-icon {
-    transition: all 0.4s ease 0s;
+    transition: transform 0.4s ease 0s;
+    visibility: visible;
+    opacity: 1;
   }
 
   .animate-icon.inactive {
     display: block;
+    visibility: visible; 
+    max-height:120px;
+    opacity: 1;
     transform: rotate(180deg);
   }
 }
