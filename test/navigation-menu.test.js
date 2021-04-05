@@ -92,7 +92,7 @@ describe("NavigationMenu", () => {
   it('User click on menu: Called handlIconChange method', async () => {
       const el = await fixture(
         html`
-        <navigation-menu>
+        <navigation-menu icon-mobile-open="/demo/assets/images/plus-8-24.png" icon-mobile-close="/demo/assets/images/x-mark-24.png">
         <ul>
         <li id="item1" title="ITEM-1">
           <ul>
@@ -116,6 +116,7 @@ describe("NavigationMenu", () => {
       );
       const options = el.shadowRoot.querySelector('#dropdown_container_item1');
       const spy = sinon.spy();
+      options.click();
       el.handlIconChange(options);
       const arrowOpen= el.shadowRoot.querySelector('#icon-open-navigation_0');
       const classArrowOpen = arrowOpen.getAttribute('class');
@@ -154,14 +155,14 @@ describe("NavigationMenu", () => {
     );
     const options = el.shadowRoot.querySelector('.navbar-list__title');
     const spy = sinon.spy(el, 'handleClick');
-    options.click()
+    options.click();
     const target = el.shadowRoot.querySelector(`#dropdown_container_item2`);
     expect(spy.called);
     expect(target).to.not.contain('inactive');
 
 });
 
-it('User click on menu: Called handlClick method', async () => {
+it('User click on menu: Called handlClickEnter method', async () => {
   const el = await fixture(
     html`
     <navigation-menu>
@@ -187,8 +188,8 @@ it('User click on menu: Called handlClick method', async () => {
     `
   );
   const options = el.shadowRoot.querySelector('#li-item1');
+ 
   const spy = sinon.spy(el, 'handleClickEnter');
-  //options.keydown()
   const target = el.shadowRoot.querySelector(`#dropdown_container_item2`);
 
   expect(spy.called);
